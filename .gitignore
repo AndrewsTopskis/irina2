@@ -1,0 +1,8 @@
+secrets.py
+*.log
+.idea/
+env/
+__pychache__/
+db.txt
+logs.txt
+ __pycache__/
