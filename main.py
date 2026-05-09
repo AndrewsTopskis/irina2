@@ -7,23 +7,26 @@ import random # для выбора случайного комплимента
 token = secrets.get('BOT_API_TOKEN')
 bot = telebot.TeleBot(token)
 users = {}
+
+
+
 # хендлер и функция для обработки команды /start
 @bot.message_handler(commands=['start'])
 def welcome(message):
     keyboard = telebot.types.InlineKeyboardMarkup()
     button_save = telebot.types.InlineKeyboardButton(text="Расклады МАК🔮",
                                                      callback_data='save_data')
-    #button_change = telebot.types.InlineKeyboardButton(text="Тесты📄",
-    #                                                   callback_data='change_data')
+    button_change = telebot.types.InlineKeyboardButton(text="Тесты📄",
+                                                       callback_data='change_data')
     #button_kurs = telebot.types.InlineKeyboardButton(text="Курс📚",
     #                                                   callback_data='kurs_data')
     button_rasskaz = telebot.types.InlineKeyboardButton(text="️Психотерапевтические рассказы⭐️",
                                                       callback_data='rasskaz_data')
-    #button_medi = telebot.types.InlineKeyboardButton(text="Медитации🧘🏻‍♀️",
-    #                                                    callback_data='medi_data')
+    button_medi = telebot.types.InlineKeyboardButton(text="Отзывы❤️",
+                                                        callback_data='medi_data')
     button_zapis = telebot.types.InlineKeyboardButton(text="️Записаться на консультацию✏️",
                                                      callback_data='zapis_data')
-    keyboard.add(button_save, button_rasskaz, button_zapis, row_width=1  )
+    keyboard.add(button_save, button_rasskaz, button_change, button_zapis, button_medi, row_width=1  )
     img = 'https://sun9-32.userapi.com/s/v1/ig2/t2Fje7Ezewl5tg0GGaVjCVsJCXVv28lqa0vkZtErcyMAAEAMkOTXRCp4JaaUVvdA2sBCbvwCurfTrXKmJ3NNWv1g.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,1080x1440,1280x1707,1440x1920,1920x2560&from=bu&cs=1920x0'
     bot.send_photo(message.chat.id, img, caption='Добро пожаловать в чат-бот психолога Ирины Елисеевой',
                      reply_markup=keyboard)
@@ -34,7 +37,9 @@ def save_btn(call):
     message = call.message
     chat_id = message.chat.id
     img = 'https://sun9-12.userapi.com/s/v1/ig2/KNolflLWUHbLhldnNtrTlxHe0vHvKiWOsCrAXmEvWecuQjO6vbFc4zf8GLuJuYua-n1Ok6itw8HDoHBptN9UTfCL.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,1080x1440,1280x1707,1440x1920,1920x2560&from=bu&cs=1920x0'
-    msg = bot.send_photo(message.chat.id, img, caption='Вы находитесь в разделе раскладов с метафорическими картами.\nВпишите ваш запрос для расклада')
+    msg = bot.send_photo(message.chat.id, img, caption='Вы находитесь в разделе раскладов с метафорическими картами')
+    bot.send_message(message.chat.id, "<b>Как правильно сформулировать вопрос для МАК-карт?</b> \n1. Говорите от первого лица и сосредоточьтесь на одной конкретной теме - так вы сделаете запрос более личным и четким. \n2. Избегайте вопросов, на которые можно ответить «Да» или «Нет». \n3. Ваш вопрос должен касаться сферы вашего влияния - сфокусируйтесь на том, что можете изменить сами, а не на действиях других людей или внешних обстоятельствах. \nВ итоге хороший запрос звучит так: он про вас, затрагивает одну тему, предполагает развернутый ответ и находится в зоне вашего контроля. Например: «Что поможет мне преодолеть страх публичных выступлений?» ", parse_mode="html")
+    bot.send_message(message.chat.id, "Введите ваш запрос для расклада:")
     users[chat_id] = {}
     bot.register_next_step_handler(msg, after_text_2)
 
@@ -181,10 +186,11 @@ def after_text_2(message):
     else:
         bot.send_message(message.chat.id, " ")'''
 
-    bot.send_message(message.chat.id, "Каждая карта может принести вам множество новых мыслей, инсайтов, озарений. При одном взгляде на картинку, у вас сразу же возникает целый набор эмоций, ассоциаций, воспоминаний, смутных или явных догадок. Вам остается только зафиксировать то, что спонтанно пришло к вам.")
-    bot.send_message(message.chat.id, "А теперь задайте себе несколько вопросов")
-    bot.send_message(message.chat.id, "Что вы чувствуете, глядя на карту? Нравится или не нравится ли вам эта картинка? Почему?", reply_markup=keyboard)
-
+    bot.send_message(message.chat.id, "<b>Как интерпретировать карту?</b> \n<b>1. Доверяйте первым ощущениям.</b> Обратите внимание на эмоции и мысли, которые возникли сразу после того, как вы увидели карту. \n<b>2. Свяжите образ с запросом.</b> Подумайте, как изображение соотносится с вашим вопросом - ищите личные, а не «универсальные» смыслы.  \n<b>3. Опишите детали.</b> Что на карте бросается в глаза? Персонажи, цвета, обстановка, направление движения - каждая деталь может нести подсказку. \n<b>4. Задавайте вопросы себе.</b> Например: «Что это говорит обо мне?», «На что это похоже в моей жизни?», «Какой совет здесь скрыт?». \n<b>5. Фиксируйте ассоциации.</b> Запишите ключевые слова, фразы, воспоминания, которые всплывают при взгляде на карту. Подумайте о том, как они связаны с вашим вопросом.", parse_mode="html", reply_markup=keyboard)
+    button_nazad = telebot.types.InlineKeyboardButton(text="Назад",
+                                                      callback_data='nazad_data')
+    keyboard = telebot.types.InlineKeyboardMarkup()
+    keyboard.add(button_nazad)
 #Обработчик кнопки НАЗАД
 @bot.callback_query_handler(func=lambda call: call.data == 'nazad_data')
 def nazad_btn(call):
@@ -193,17 +199,17 @@ def nazad_btn(call):
     keyboard = telebot.types.InlineKeyboardMarkup()
     button_save = telebot.types.InlineKeyboardButton(text="Расклады МАК🔮",
                                                      callback_data='save_data')
-    #button_change = telebot.types.InlineKeyboardButton(text="Тесты📄",
-    #                                                   callback_data='change_data')
+    button_change = telebot.types.InlineKeyboardButton(text="Тесты📄",
+                                                       callback_data='change_data')
     #button_kurs = telebot.types.InlineKeyboardButton(text="Курс📚",
     #                                                 callback_data='kurs_data')
     button_rasskaz = telebot.types.InlineKeyboardButton(text="️Психотерапевтические рассказы⭐️",
                                                         callback_data='rasskaz_data')
-    #button_medi = telebot.types.InlineKeyboardButton(text="Медитации🧘🏻‍♀️",
-     #                                                callback_data='medi_data')
+    button_medi = telebot.types.InlineKeyboardButton(text="Отзывы❤️",
+                                                    callback_data='medi_data')
     button_zapis = telebot.types.InlineKeyboardButton(text="️Записаться на консультацию✏️",
                                                       callback_data='zapis_data')
-    keyboard.add(button_save, button_rasskaz, button_zapis, row_width=1)
+    keyboard.add(button_save, button_rasskaz,button_change, button_zapis, button_medi, row_width=1)
     img = 'https://sun9-32.userapi.com/s/v1/ig2/t2Fje7Ezewl5tg0GGaVjCVsJCXVv28lqa0vkZtErcyMAAEAMkOTXRCp4JaaUVvdA2sBCbvwCurfTrXKmJ3NNWv1g.jpg?quality=95&as=32x43,48x64,72x96,108x144,160x213,240x320,360x480,480x640,540x720,640x853,720x960,1080x1440,1280x1707,1440x1920,1920x2560&from=bu&cs=1920x0'
     bot.send_photo(message.chat.id, img, caption='Добро пожаловать в чат-бот психолога Ирины Елисеевой',
                    reply_markup=keyboard)
@@ -216,9 +222,12 @@ def change_btn(call):
     button_nazad = telebot.types.InlineKeyboardButton(text="Назад",
                                                       callback_data='nazad_data')
     keyboard.add(button_nazad)
-    link1 = 'https://psytests.org'
-    link2 = 'https://www.b17.ru/tests/'
-    bot.send_message(message.chat.id, "Здесь полезные ссылки на психологические тесты \n 1. Тест чего-то там: "+ link1 + "\n 2. Тест кого-то там: "+ link2)
+    link1 = 'https://psytests.org/life/svsK.html'
+    link2 = 'https://psytests.org/typo/tmig.html'
+    link3 = 'https://psytests.org/trait/viais.html'
+    link4 = 'https://psytests.org/work/ddoG.html'
+    link5 = 'https://psytests.org/big5/ineoB.html'
+    bot.send_message(message.chat.id, "Проходите тесты с удовольствием — они помогут вам лучше узнать себя и найти интересные идеи для развития! Но помните: результаты тестов носят ознакомительный характер и предназначены для самопознания и развлечения. Они не являются профессиональной психологической диагностикой. Для глубокой оценки личности лучше обратитесь к квалифицированному психологу.\n\n 1. Тест на определение ценностей: "+ link1 + "\n 2. Тест на преобладающий вид интеллекта: "+ link2 + "\n 3. Тест, определяющий достоинства личности: "+ link3 + "\n 4. Профориентационный тест: "+ link4 + "\n 5. Тест на измерение 5-ти основных черт личности: общительности, ответственности,доброты, эмоциональной устойчивости и открытости  новому: "+ link5,  reply_markup=keyboard)
 
 @bot.callback_query_handler(func=lambda call: call.data == 'kurs_data')
 def kurs_btn(call):
@@ -368,8 +377,8 @@ def kurs_btn(call):
     button_nazad = telebot.types.InlineKeyboardButton(text="Назад",
                                                       callback_data='nazad_data')
     keyboard.add(button_nazad)
-    audio1 = 'https://disk.yandex.ru/d/dZIkPwtehtnnXQ'
-    bot.send_message(message.chat.id, "Вот ссылка на аудиофайл: \n "+ audio1 + "\n Приятной медитации!",
+    audio1 = 'https://vk.ru/album-221761246_296697148'
+    bot.send_message(message.chat.id, "Отзывы можно просмотреть по ссылке: \n "+ audio1,
                    reply_markup=keyboard)
 
 
