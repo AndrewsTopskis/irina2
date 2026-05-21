@@ -3,10 +3,8 @@ import random
 from telebot import types # для определения типов
 import random # для выбора случайного комплимента
 # передаём значение переменной с кодом экземпляру бота
-token = {'BOT_API_TOKEN': '8316990519:AAFA29x7evTvJXCpnoznk2kuazhlswFaoTY'}
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot({'BOT_API_TOKEN': '8316990519:AAFA29x7evTvJXCpnoznk2kuazhlswFaoTY'})
 users = {}
-
 
 
 # хендлер и функция для обработки команды /start
