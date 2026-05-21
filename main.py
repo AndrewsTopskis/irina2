@@ -1,5 +1,4 @@
 import telebot # импортируем telebot
-from secrets import secrets # словарь с токеном из файла secrets.py
 import random # для выбора случайного комплимента
 # передаём значение переменной с кодом экземпляру бота
 bot = telebot.TeleBot('8316990519:AAFA29x7evTvJXCpnoznk2kuazhlswFaoTY')
