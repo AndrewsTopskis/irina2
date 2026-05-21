@@ -1,10 +1,9 @@
 import telebot # импортируем telebot
 import random
-from secrets import secrets # словарь с токеном из файла secrets.py
 from telebot import types # для определения типов
 import random # для выбора случайного комплимента
 # передаём значение переменной с кодом экземпляру бота
-token = secrets.get('BOT_API_TOKEN')
+token = {'BOT_API_TOKEN': '8316990519:AAFA29x7evTvJXCpnoznk2kuazhlswFaoTY'}
 bot = telebot.TeleBot(token)
 users = {}
 
